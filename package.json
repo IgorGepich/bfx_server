@@ -1,0 +1,25 @@
+{
+  "name": "bfx_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "trading view",
+    "bitfinex",
+    "google appscript"],
+  "author": "Ihor Sutulov",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^8.1.2",
+    "body-parser": "^1.19.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0"
+  }
+}
