@@ -17,13 +17,13 @@ app.post('/submit', (req, res) => {
     });
 
     req.on('end', ()=>{
-        const params = JSON.parse(postBodyRequest)
+        let params = JSON.parse(postBodyRequest)
         console.log('params: ', params)
         let orderType = params.type
         let pair = params.pair
         let amount = params.volume
-        const nonce = (Date.now() * 1000).toString()
-        const body = {
+        let nonce = (Date.now() * 1000).toString()
+        let body = {
             type: orderType,
             symbol: pair,
             amount: amount
@@ -31,7 +31,7 @@ app.post('/submit', (req, res) => {
         console.log('body: ', body)
 
         let signature = `/api/${apiPathSubmit}${nonce}${JSON.stringify(body)}`
-        const sig = cryptoJS.HmacSHA384(signature, apiSecret).toString()
+        let sig = cryptoJS.HmacSHA384(signature, apiSecret).toString()
 
 
         fetch(`https://api.bitfinex.com/${apiPathSubmit}`, {
