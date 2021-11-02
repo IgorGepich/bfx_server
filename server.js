@@ -8,7 +8,7 @@ const apiSecret = process.env.API_SECRET
 const apiPathSubmit = 'v2/auth/w/order/submit'
 const SERVER_PORT = process.env.SERVER_PORT
 const app = express()
-const mtaRoutes = [process.env.MTA_DEV]
+const mtaRoutes = [process.env.MTA_REAL, process.env.MTA_DOP]
 
 app.post('/submit', (req, res) => {
     let postBodyRequest = ''
@@ -95,6 +95,33 @@ function resendPostMethod(reqBody) {
         })
     }
 }
+
+app.post('/wallet', (req, res) => {
+
+    const nonce = (Date.now() * 1000).toString()
+    const body = {
+    }
+
+    let signature = `/api/${apiPathWallet}${nonce}${JSON.stringify(body)}`
+    const sig = CryptoJS.HmacSHA384(signature, apiSecret).toString()
+
+    fetch(`https://api.bitfinex.com/${apiPathWallet}`, {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+            /* auth headers */
+            'Content-Type': 'application/json',
+            'bfx-nonce': nonce,
+            'bfx-apikey': apiKey,
+            'bfx-signature': sig
+        }
+    })
+        .then(res => res.json())
+        .then(json => res.end(Buffer.from(JSON.stringify(json)))) // Возврат данных с биржи
+        .catch(err => {
+            console.log(err)
+        })
+})
 
 app.listen(SERVER_PORT,() => {
     console.log('Server has been started on port', + SERVER_PORT, '...')
