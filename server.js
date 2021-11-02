@@ -8,7 +8,7 @@ const apiSecret = process.env.API_SECRET
 const apiPathSubmit = 'v2/auth/w/order/submit'
 const SERVER_PORT = process.env.SERVER_PORT
 const app = express()
-const mtaRoutes = [process.env.MTA_REAL, process.env.MTA_DEV]
+const mtaRoutes = [process.env.MTA_DEV]
 
 app.post('/submit', (req, res) => {
     let postBodyRequest = ''
