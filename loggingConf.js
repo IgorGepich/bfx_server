@@ -1,89 +1,21 @@
-const config = {
-        log4js: {
-            appLogConfig: {
-                appenders: {
-                    out: {type: 'console'},
-                    task: {type: 'dateFile', filename: 'logs/task', "pattern": "-dd.log", alwaysIncludePattern: true},
-                    result: {
-                        type: 'dateFile',
-                        filename: 'logs/result',
-                        "pattern": "-dd.log",
-                        alwaysIncludePattern: true
-                    },
-                    error: {type: 'dateFile', filename: 'logs/error', "pattern": "-dd.log", alwaysIncludePattern: true},
-                    default: {
-                        type: 'dateFile',
-                        filename: 'logs/default',
-                        "pattern": "-dd.log",
-                        alwaysIncludePattern: true
-                    },
-                    rate: {type: 'dateFile', filename: 'logs/rate', "pattern": "-dd.log", alwaysIncludePattern: true}
-                },
-                categories: {
-                    default: {appenders: ['out', 'default'], level: 'info'},
-                    task: {appenders: ['task'], level: 'info'},
-                    result: {appenders: ['result'], level: 'info'},
-                    error: {appenders: ['error'], level: 'error'},
-                    rate: {appenders: ['rate'], level: 'info'}
-                }
-            }
-        }
-};
+const log4js = require("log4js");
+log4js.configure({
+    appenders: {
+        out: { type: 'console' },
+        debug: { type: 'dateFile', filename: 'logs/debug',"pattern":"-dd-MM.log", alwaysIncludePattern:true},
+        error: { type: 'dateFile', filename: 'logs/error', "pattern":"-dd-MM.log",alwaysIncludePattern:true},
+        info: { type: 'dateFile', filename: 'logs/info', "pattern":"-dd-MM.log",alwaysIncludePattern:true},
+        default: { type: 'dateFile', filename: 'logs/default', "pattern":"-dd-MM.log",alwaysIncludePattern:true}
+    },
+    categories: {
+        info: { appenders: ['info'], level: 'info' },
+        debug: { appenders: ['debug'], level: 'debug' },
+        error: { appenders: ['error'], level: 'error' },
+        default: { appenders: ['default'], level: 'info' }
+    }}
+);
 
-module.exports = config;
-
-
-
-//////
-
-// let log4js = require('log4js');
-// let fs = require('fs-extra');
-//
-// let getLogger = function (moduleName) {
-//     try{
-//         let appList=[];
-//         console.log('get logger');
-//         appList.push(moduleName);
-//         let logger = log4js.getLogger(moduleName);
-//         let appLog = './logs/app.log';
-//         fs.ensureFileSync(appLog);
-//         log4js.configure({
-//             appenders: {
-//                 out: { type: 'console' },
-//                 task: { type: 'dateFile', filename: 'logs/task',"pattern":"-dd.log", alwaysIncludePattern:true },
-//                 result: { type: 'dateFile', filename: 'logs/result',"pattern":"-dd.log", alwaysIncludePattern:true},
-//                 error: { type: 'dateFile', filename: 'logs/error', "pattern":"-dd.log",alwaysIncludePattern:true},
-//                 default: { type: 'dateFile', filename: 'logs/default', "pattern":"-dd.log",alwaysIncludePattern:true},
-//                 rate: { type: 'dateFile', filename: 'logs/rate', "pattern":"-dd.log",alwaysIncludePattern:true}
-//             },
-//             categories: {
-//                 default: { appenders: ['out','default'], level: 'info' },
-//                 task: { appenders: ['task'], level: 'info'},
-//                 result: { appenders: ['result'], level: 'info' },
-//                 error: { appenders: ['error'], level: 'error' },
-//                 rate: { appenders: ['rate'], level: 'info' }
-//             }
-//         });
-//
-//     }catch(err){
-//         console.log(err);
-//     }
-// };
-// exports.getLogger = getLogger;
-
-///////////
-// const appSettings = {
-//     log4js: {
-//         traceLogConfig: {
-//             appenders: {
-//                 fileAppender: { type: 'file', filename: `./logs/${settings.custid}/${Date.now()}.log`},
-//                 consoleAppender: { type: 'console' }
-//             },
-//             categories: {
-//                 default: { appenders: ['fileAppender', 'consoleAppender'], level: 'trace'}
-//             }
-//         }
-//     }
-// };
-//
-// module.exports = appSettings;
+exports.infoLogger = log4js.getLogger("info")
+exports.errorLogger = log4js.getLogger("error")
+exports.debugLogger = log4js.getLogger("debug")
+exports.defaultLogger =log4js.getLogger("default")

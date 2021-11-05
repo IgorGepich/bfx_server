@@ -3,3 +3,4 @@ API_SECRET=
 SERVER_PORT=
 MTA_REAL=
 MTA_DEV=
+LOGGER_CONF='./loggingConf.js'

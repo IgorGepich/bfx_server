@@ -11,10 +11,12 @@ const SERVER_PORT = process.env.SERVER_PORT
 const app = express()
 const mtaRoutes = [process.env.MTA_DEV]
 
-import log4js from 'log4js'
-import config from 'loggingConf.js'
-log4js.configure(config.log4js.appLogConfig)
-const logger = log4js.getLogger()
+const logger = require(process.env.LOGGER_CONF)
+const infoLog = logger.infoLogger;
+const errorLog = logger.errorLogger;
+const debugLog = logger.debugLogger;
+const defaultLog = logger.defaultLogger;
+
 
 app.post('/submit', (req, res) => {
     let postBodyRequest = ''
@@ -25,7 +27,6 @@ app.post('/submit', (req, res) => {
     req.on('end', ()=>{
         let params = JSON.parse(postBodyRequest)
         // console.log('params: ', params)
-        logger.info('params', params)
         let orderType = params.type
         let pair = params.pair
         let amount = params.volume
@@ -53,9 +54,9 @@ app.post('/submit', (req, res) => {
         })
             .then(res => res.json())
             .then(json => res.end(Buffer.from(JSON.stringify(json)))) // !!!!Возращает
-            .then(json => console.log(json))
+            .then(json => infoLog.info(json))
             .catch(err => {
-                console.log(err)
+                errorLog.error(err, "Response error")
             })
 
     })
