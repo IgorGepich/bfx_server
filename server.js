@@ -9,7 +9,12 @@ const apiPathSubmit = 'v2/auth/w/order/submit'
 const apiPathWallet = "v2/auth/r/wallets"
 const SERVER_PORT = process.env.SERVER_PORT
 const app = express()
-const mtaRoutes = [process.env.MTA_REAL, process.env.MTA_DOP, process.env.MTA_DEV]
+const mtaRoutes = [process.env.MTA_DEV]
+
+import log4js from 'log4js'
+import config from 'loggingConf.js'
+log4js.configure(config.log4js.appLogConfig)
+const logger = log4js.getLogger()
 
 app.post('/submit', (req, res) => {
     let postBodyRequest = ''
@@ -19,7 +24,8 @@ app.post('/submit', (req, res) => {
 
     req.on('end', ()=>{
         let params = JSON.parse(postBodyRequest)
-        console.log('params: ', params)
+        // console.log('params: ', params)
+        logger.info('params', params)
         let orderType = params.type
         let pair = params.pair
         let amount = params.volume
@@ -104,7 +110,7 @@ app.post('/wallet', (req, res) => {
     }
 
     let signature = `/api/${apiPathWallet}${nonce}${JSON.stringify(body)}`
-    const sig = CryptoJS.HmacSHA384(signature, apiSecret).toString()
+    const sig = cryptoJS.HmacSHA384(signature, apiSecret).toString()
 
     fetch(`https://api.bitfinex.com/${apiPathWallet}`, {
         method: 'POST',
