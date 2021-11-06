@@ -1,4 +1,4 @@
-const log4js = require("log4js");
+import log4js from "log4js"
 log4js.configure({
     appenders: {
         out: { type: 'console' },
@@ -15,7 +15,9 @@ log4js.configure({
     }}
 );
 
-exports.infoLogger = log4js.getLogger("info")
-exports.errorLogger = log4js.getLogger("error")
-exports.debugLogger = log4js.getLogger("debug")
-exports.defaultLogger =log4js.getLogger("default")
+const infoLog = log4js.getLogger("info")
+const errorLog = log4js.getLogger("error")
+const debugLog = log4js.getLogger("debug")
+const defaultLog = log4js.getLogger("default")
+
+export {infoLog, errorLog, debugLog, defaultLog}

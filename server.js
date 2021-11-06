@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from "dotenv"
 dotenv.config()
 import fetch from "node-fetch"
 import express from "express"
@@ -11,12 +11,7 @@ const SERVER_PORT = process.env.SERVER_PORT
 const app = express()
 const mtaRoutes = [process.env.MTA_DEV]
 
-const logger = require(process.env.LOGGER_CONF)
-const infoLog = logger.infoLogger;
-const errorLog = logger.errorLogger;
-const debugLog = logger.debugLogger;
-const defaultLog = logger.defaultLogger;
-
+import {infoLog, errorLog, debugLog, defaultLog} from './loggingConf.js'
 
 app.post('/submit', (req, res) => {
     let postBodyRequest = ''
@@ -27,6 +22,7 @@ app.post('/submit', (req, res) => {
     req.on('end', ()=>{
         let params = JSON.parse(postBodyRequest)
         // console.log('params: ', params)
+        infoLog.info("params: ", params )
         let orderType = params.type
         let pair = params.pair
         let amount = params.volume
@@ -36,7 +32,7 @@ app.post('/submit', (req, res) => {
             symbol: pair,
             amount: amount
         }
-        console.log('body: ', body)
+        infoLog.info('body: ', body)
 
         let signature = `/api/${apiPathSubmit}${nonce}${JSON.stringify(body)}`
         let sig = cryptoJS.HmacSHA384(signature, apiSecret).toString()
@@ -54,7 +50,7 @@ app.post('/submit', (req, res) => {
         })
             .then(res => res.json())
             .then(json => res.end(Buffer.from(JSON.stringify(json)))) // !!!!Возращает
-            .then(json => infoLog.info(json))
+            .then(json => debugLog.debug(json))
             .catch(err => {
                 errorLog.error(err, "Response error")
             })
