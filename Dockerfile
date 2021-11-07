@@ -1,4 +1,4 @@
-FROM node:lts-gallium
+FROM node:lts-alpine3.13
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
