@@ -70,7 +70,7 @@ app.post('/', (req, res) => {
     })
         .on('end', function() {
             let data = Buffer.concat(chunks)
-            let reqBody = JSON.parse(data)
+            let reqBody = JSON.parse(data.toString())
             console.log(reqBody)
 
             switch (targetUrl){
