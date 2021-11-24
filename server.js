@@ -21,7 +21,6 @@ app.post('/submit', (req, res) => {
 
     req.on('end', ()=>{
         let params = JSON.parse(postBodyRequest)
-        // console.log('params: ', params)
         infoLog.info("params: ", params )
         let orderType = params.type
         let pair = params.pair
@@ -97,6 +96,8 @@ function resendPostMethod(reqBody) {
                 'Content-Type': 'application/json',
             }
         })
+            .then(res => res.json())
+            .then(json => debugLog.info(json))
     }
 }
 
